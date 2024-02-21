@@ -1,0 +1,47 @@
+[package]
+name = "web3-monitor"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[profile.dev]
+panic = "unwind"
+overflow-checks = false
+debug = false
+
+[profile.release]
+codegen-units = 1
+opt-level = 3
+lto = true
+debug = false
+panic = "unwind"
+overflow-checks = false
+
+[dependencies]
+anyhow = "1.0.80"
+async-trait = "0.1.77"
+ethers = { version = "2.0.13", features = ["ws", "rustls"] }
+futures = "0.3.30"
+thiserror = "1.0.57"
+tokio = { version = "1.36.0", features = ["full"] }
+tokio-stream = { version = "0.1.14", features = ["sync"] }
+tracing = "0.1.40"
+reqwest = { version = "0.11.24", default-features = false, features = ["rustls-tls"] }
+ethers-flashbots = { version = "0.15.0", features = ["rustls"] }
+clap = { version = "4.5.1", features = ["derive"] }
+config = "0.14.0"
+shadow-rs = "0.26.1"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter", "json"] }
+serde = "1.0.197"
+
+[build-dependencies]
+shadow-rs = "0.26.1"
+
+[target.'cfg(not(windows))'.dependencies]
+jemallocator = { version = "0.5.4", optional = true }
+jemalloc-ctl = { version = "0.5.4", optional = true }
+
+[features]
+default = ["jemalloc"]
+jemalloc = ["dep:jemallocator", "dep:jemalloc-ctl"]
+jemalloc-prof = ["jemalloc", "jemallocator?/profiling"]
