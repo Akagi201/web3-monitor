@@ -32,7 +32,9 @@ use crate::{
 
 shadow!(build);
 
-const UNISWAPV2_ROUTER02: &str = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
+// uniswapv2 pairs
+// https://v2.info.uniswap.org/pairs
+const UNISWAPV2_PAIR_ETH_USDT: &str = "0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852";
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -56,7 +58,7 @@ async fn main() -> Result<()> {
     let block_collector = CollectorMap::new(block_collector, Events::NewBlock);
     engine.add_collector(Box::new(block_collector));
 
-    let filter = Filter::new().address(vec![UNISWAPV2_ROUTER02.parse()?]);
+    let filter = Filter::new().address(vec![UNISWAPV2_PAIR_ETH_USDT.parse()?]);
     let log_collector = Box::new(LogCollector::new(provider.clone(), filter));
     let log_collector = CollectorMap::new(log_collector, Events::Log);
     engine.add_collector(Box::new(log_collector));
