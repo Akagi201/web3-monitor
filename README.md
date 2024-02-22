@@ -1,6 +1,6 @@
-# web3-monitor
+# Web3 Monitor
 
-A stupid monitor for evm compatible chains.
+A stupid monitor for EVM compatible chains.
 
 ## Run
 

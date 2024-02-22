@@ -2,7 +2,7 @@ use std::pin::Pin;
 
 use anyhow::Result;
 use async_trait::async_trait;
-use ethers::types::Transaction;
+use ethers::types::{Log, Transaction};
 use tokio_stream::{Stream, StreamExt};
 
 use crate::{
@@ -99,6 +99,7 @@ where
 pub enum Events {
     NewBlock(NewBlock),
     Transaction(Transaction),
+    Log(Log),
 }
 
 /// Convenience enum containing all the actions that can be executed by executors.
