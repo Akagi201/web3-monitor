@@ -1,0 +1,3 @@
+node:
+  rpc: 'https://mainnet.gateway.tenderly.co/4hOahBTnILJ3nUZhlTixR0'
+  ws: 'wss://mainnet.gateway.tenderly.co/4hOahBTnILJ3nUZhlTixR0'

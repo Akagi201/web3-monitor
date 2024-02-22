@@ -106,4 +106,5 @@ pub enum Events {
 pub enum Actions {
     FlashbotsBundle(FlashbotsBundle),
     SubmitTxToMempool(SubmitTxToMempool),
+    DryRun(String),
 }

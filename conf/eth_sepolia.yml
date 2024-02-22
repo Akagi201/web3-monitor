@@ -1,0 +1,3 @@
+node:
+  rpc: 'https://sepolia.gateway.tenderly.co/4hOahBTnILJ3nUZhlTixR0'
+  ws: 'wss://sepolia.gateway.tenderly.co/4hOahBTnILJ3nUZhlTixR0'

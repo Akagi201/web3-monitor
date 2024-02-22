@@ -16,7 +16,13 @@ use ethers::providers::{Provider, Ws};
 use log::*;
 use shadow_rs::shadow;
 
-use crate::{collectors::block_collector::BlockCollector, engine::Engine, types::{Actions, CollectorMap, Events}};
+use crate::{
+    collectors::block_collector::BlockCollector,
+    engine::Engine,
+    executors::dry_run::DryRunExecutor,
+    strategies::new_block::NewBlockStrategy,
+    types::{Actions, CollectorMap, Events, ExecutorMap},
+};
 
 shadow!(build);
 
@@ -41,6 +47,22 @@ async fn main() -> Result<()> {
     let block_collector = Box::new(BlockCollector::new(provider.clone()));
     let block_collector = CollectorMap::new(block_collector, Events::NewBlock);
     engine.add_collector(Box::new(block_collector));
+
+    let new_block_strategy = NewBlockStrategy::default();
+    engine.add_strategy(Box::new(new_block_strategy));
+
+    let dry_run_executor = Box::new(DryRunExecutor::default());
+    let dry_run_executor = ExecutorMap::new(dry_run_executor, |action| match action {
+        Actions::DryRun(action) => Some(action),
+        _ => None,
+    });
+    engine.add_executor(Box::new(dry_run_executor));
+
+    if let Ok(mut set) = engine.run().await {
+        while let Some(res) = set.join_next().await {
+            info!(target: Module::ENGINE, "res: {:?}", res);
+        }
+    }
 
     Ok(())
 }

@@ -1,16 +1,17 @@
 use std::{sync::Arc, time::Duration};
 
-use crate::{
-    collectors::{block_collector::BlockCollector, mempool_collector::MempoolCollector},
-    executors::mempool_executor::{MempoolExecutor, SubmitTxToMempool},
-    types::{Collector, Executor},
-};
 use ethers::{
     providers::{Middleware, Provider, StreamExt, Ws},
     types::{BlockNumber, TransactionRequest, U256},
     utils::{Anvil, AnvilInstance},
 };
 use tokio::time::sleep;
+
+use crate::{
+    collectors::{block_collector::BlockCollector, mempool_collector::MempoolCollector},
+    executors::mempool_executor::{MempoolExecutor, SubmitTxToMempool},
+    types::{Collector, Executor},
+};
 
 /// Spawns Anvil and instantiates an Http provider.
 pub async fn spawn_anvil() -> (Provider<Ws>, AnvilInstance) {

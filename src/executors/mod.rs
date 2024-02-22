@@ -7,3 +7,6 @@ pub mod flashbots_executor;
 
 /// This executor submits transactions to the public mempool.
 pub mod mempool_executor;
+
+/// This executor logs the action data.
+pub mod dry_run;

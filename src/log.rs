@@ -7,6 +7,10 @@ pub struct Module;
 impl Module {
     pub const APP: &'static str = "app";
     pub const REST: &'static str = "rest";
+    pub const COLLECTOR: &'static str = "collector";
+    pub const STRATEGY: &'static str = "strategy";
+    pub const EXECUTOR: &'static str = "executor";
+    pub const ENGINE: &'static str = "engine";
 }
 
 pub fn init_log() {
