@@ -3,9 +3,11 @@ use tokio::{
     task::JoinSet,
 };
 use tokio_stream::StreamExt;
-use tracing::{error, info};
 
-use crate::types::{Collector, Executor, Strategy};
+use crate::{
+    log::*,
+    types::{Collector, Executor, Strategy},
+};
 
 /// The main engine. This struct is responsible for orchestrating the
 /// data flow between collectors, strategies, and executors.
@@ -87,14 +89,16 @@ where
         for executor in self.executors {
             let mut receiver = action_sender.subscribe();
             set.spawn(async move {
-                info!("starting executor... ");
+                info!(target: Module::ENGINE, "starting executor... ");
                 loop {
                     match receiver.recv().await {
                         Ok(action) => match executor.execute(action).await {
                             Ok(_) => {}
-                            Err(e) => error!("error executing action: {}", e),
+                            Err(e) => {
+                                error!(target: Module::ENGINE, "error executing action: {}", e)
+                            }
                         },
-                        Err(e) => error!("error receiving action: {}", e),
+                        Err(e) => error!(target: Module::ENGINE, "error receiving action: {}", e),
                     }
                 }
             });
@@ -107,18 +111,21 @@ where
             strategy.sync_state().await?;
 
             set.spawn(async move {
-                info!("starting strategy... ");
+                info!(target: Module::ENGINE, "starting strategy... ");
                 loop {
                     match event_receiver.recv().await {
                         Ok(event) => {
                             for action in strategy.process_event(event).await {
                                 match action_sender.send(action) {
                                     Ok(_) => {}
-                                    Err(e) => error!("error sending action: {}", e),
+                                    Err(e) => error!(target: Module::ENGINE, "error sending action: {}", e),
                                 }
                             }
                         }
-                        Err(e) => error!("error receiving event: {}", e),
+                        Err(e) => {
+                            error!(target: Module::ENGINE, "error receiving event: {}, event_receiver len: {}", e, event_receiver.len());
+                            tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
+                        }
                     }
                 }
             });
@@ -128,12 +135,12 @@ where
         for collector in self.collectors {
             let event_sender = event_sender.clone();
             set.spawn(async move {
-                info!("starting collector... ");
+                info!(target: Module::ENGINE, "starting collector... ");
                 let mut event_stream = collector.get_event_stream().await.unwrap();
                 while let Some(event) = event_stream.next().await {
                     match event_sender.send(event) {
                         Ok(_) => {}
-                        Err(e) => error!("error sending event: {}", e),
+                        Err(e) => error!(target: Module::ENGINE, "error sending event: {}", e),
                     }
                 }
             });

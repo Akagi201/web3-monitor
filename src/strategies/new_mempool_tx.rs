@@ -24,12 +24,6 @@ impl Strategy<Events, Actions> for NewMempoolTxStrategy {
 
 impl NewMempoolTxStrategy {
     fn handle_new_tx(&mut self, data: Transaction) -> Vec<Actions> {
-        if let Some(block_number) = data.block_number {
-            if block_number.as_u64() > self.last_height {
-                self.last_height = block_number.as_u64();
-                return vec![Actions::DryRun(format!("New mempool tx: {:?}", data))];
-            }
-        }
-        vec![]
+        vec![Actions::DryRun(format!("New mempool tx: {:?}", data))]
     }
 }

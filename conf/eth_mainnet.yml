@@ -1,3 +1,3 @@
 node:
-  rpc: ''
-  ws: ''
+  rpc: 'https://ethereum-rpc.publicnode.com'
+  ws: 'wss://ethereum-rpc.publicnode.com'

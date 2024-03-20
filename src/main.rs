@@ -26,7 +26,9 @@ use crate::{
     },
     engine::Engine,
     executors::dry_run::DryRunExecutor,
-    strategies::{new_block::NewBlockStrategy, new_log::NewLogStrategy},
+    strategies::{
+        new_block::NewBlockStrategy, new_log::NewLogStrategy, new_mempool_tx::NewMempoolTxStrategy,
+    },
     types::{Actions, CollectorMap, Events, ExecutorMap},
 };
 
@@ -63,10 +65,6 @@ async fn main() -> Result<()> {
     let log_collector = CollectorMap::new(log_collector, Events::Log);
     engine.add_collector(Box::new(log_collector));
 
-    let block_collector = Box::new(BlockCollector::new(provider.clone()));
-    let block_collector = CollectorMap::new(block_collector, Events::NewBlock);
-    engine.add_collector(Box::new(block_collector));
-
     let mempool_collector = Box::new(MempoolCollector::new(provider.clone()));
     let mempool_collector = CollectorMap::new(mempool_collector, Events::Transaction);
     engine.add_collector(Box::new(mempool_collector));
@@ -76,6 +74,9 @@ async fn main() -> Result<()> {
 
     let new_log_strategy = NewLogStrategy::default();
     engine.add_strategy(Box::new(new_log_strategy));
+
+    let new_mempool_strategy = NewMempoolTxStrategy::default();
+    engine.add_strategy(Box::new(new_mempool_strategy));
 
     let dry_run_executor = Box::<DryRunExecutor>::default();
     let dry_run_executor = ExecutorMap::new(dry_run_executor, |action| match action {

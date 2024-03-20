@@ -7,9 +7,8 @@ use ethers::{
 };
 use ethers_flashbots::{BundleRequest, FlashbotsMiddleware};
 use reqwest::Url;
-use tracing::error;
 
-use crate::types::Executor;
+use crate::{log::*, types::Executor};
 
 /// A Flashbots executor that sends transactions to the Flashbots relay.
 pub struct FlashbotsExecutor<M, S> {
@@ -61,14 +60,14 @@ where
         let simulated_bundle = self.fb_client.simulate_bundle(&bundle).await;
 
         if let Err(simulate_error) = simulated_bundle {
-            error!("Error simulating bundle: {:?}", simulate_error);
+            error!(target: Module::EXECUTOR, "Error simulating bundle: {:?}", simulate_error);
         }
 
         // Send bundle.
         let pending_bundle = self.fb_client.send_bundle(&bundle).await;
 
         if let Err(send_error) = pending_bundle {
-            error!("Error sending bundle: {:?}", send_error);
+            error!(target: Module::EXECUTOR, "Error sending bundle: {:?}", send_error);
         }
 
         Ok(())

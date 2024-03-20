@@ -9,7 +9,10 @@ use ethers::{
 };
 use tokio_stream::StreamExt;
 
-use crate::types::{Collector, CollectorStream};
+use crate::{
+    log::*,
+    types::{Collector, CollectorStream},
+};
 
 /// A collector that listens for new blocks, and generates a stream of
 /// [events](NewBlock) which contain the block number and hash.
@@ -42,7 +45,10 @@ where
     async fn get_event_stream(&self) -> Result<CollectorStream<'_, NewBlock>> {
         let stream = self.provider.subscribe_blocks().await?;
         let stream = stream.filter_map(|block| match block.hash {
-            Some(hash) => block.number.map(|number| NewBlock { hash, number }),
+            Some(hash) => {
+                debug!(target: Module::COLLECTOR, "New block: {:?}", block);
+                block.number.map(|number| NewBlock { hash, number })
+            }
             None => None,
         });
         Ok(Box::pin(stream))

@@ -18,24 +18,24 @@ panic = "unwind"
 overflow-checks = false
 
 [dependencies]
-anyhow = "1.0.80"
-async-trait = "0.1.77"
-ethers = { version = "2.0.13", features = ["ws", "rustls"] }
+anyhow = "1.0.81"
+async-trait = "0.1.78"
+ethers = { version = "2.0.14", features = ["ws", "rustls"] }
 futures = "0.3.30"
-thiserror = "1.0.57"
+thiserror = "1.0.58"
 tokio = { version = "1.36.0", features = ["full"] }
-tokio-stream = { version = "0.1.14", features = ["sync"] }
+tokio-stream = { version = "0.1.15", features = ["sync"] }
 tracing = "0.1.40"
-reqwest = { version = "0.11.24", default-features = false, features = ["rustls-tls"] }
+reqwest = { version = "0.11.27", default-features = false, features = ["rustls-tls"] }
 ethers-flashbots = { version = "0.15.0", features = ["rustls"] }
-clap = { version = "4.5.1", features = ["derive"] }
+clap = { version = "4.5.3", features = ["derive"] }
 config = "0.14.0"
-shadow-rs = "0.26.1"
+shadow-rs = "0.27.1"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter", "json"] }
 serde = "1.0.197"
 
 [build-dependencies]
-shadow-rs = "0.26.1"
+shadow-rs = "0.27.1"
 
 [target.'cfg(not(windows))'.dependencies]
 jemallocator = { version = "0.5.4", optional = true }
