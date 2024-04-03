@@ -1,12 +1,12 @@
 use std::sync::Arc;
 
-use anyhow::Result;
 use async_trait::async_trait;
 use ethers::{
     prelude::Middleware,
     providers::PubsubClient,
     types::{H256, U64},
 };
+use eyre::Result;
 use tokio_stream::StreamExt;
 
 use crate::{

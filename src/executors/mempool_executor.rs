@@ -3,12 +3,12 @@ use std::{
     sync::Arc,
 };
 
-use anyhow::{Context, Result};
 use async_trait::async_trait;
 use ethers::{
     providers::Middleware,
     types::{transaction::eip2718::TypedTransaction, U256},
 };
+use eyre::{Context, Result};
 
 use crate::types::Executor;
 

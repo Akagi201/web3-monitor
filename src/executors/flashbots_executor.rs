@@ -1,11 +1,11 @@
 use std::sync::Arc;
 
-use anyhow::Result;
 use async_trait::async_trait;
 use ethers::{
     providers::Middleware, signers::Signer, types::transaction::eip2718::TypedTransaction,
 };
 use ethers_flashbots::{BundleRequest, FlashbotsMiddleware};
+use eyre::Result;
 use reqwest::Url;
 
 use crate::{log::*, types::Executor};

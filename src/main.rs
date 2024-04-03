@@ -9,13 +9,13 @@ pub mod utilities;
 
 use std::sync::Arc;
 
-use anyhow::Result;
 use app_config::{allocator_name, Cli, Web3MonitorConfig};
 use clap::Parser;
 use ethers::{
     providers::{Provider, Ws},
     types::Filter,
 };
+use eyre::Result;
 use log::*;
 use shadow_rs::shadow;
 

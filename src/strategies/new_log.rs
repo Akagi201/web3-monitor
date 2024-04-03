@@ -1,6 +1,6 @@
-use anyhow::Result;
 use async_trait::async_trait;
 use ethers::types::Log;
+use eyre::Result;
 
 use crate::types::{Actions, Events, Strategy};
 

@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
-use anyhow::Result;
 use async_trait::async_trait;
 use ethers::{prelude::Middleware, providers::PubsubClient, types::Transaction};
+use eyre::Result;
 use futures::StreamExt;
 
 use crate::{

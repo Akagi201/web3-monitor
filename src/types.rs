@@ -1,8 +1,8 @@
 use std::pin::Pin;
 
-use anyhow::Result;
 use async_trait::async_trait;
 use ethers::types::{Log, Transaction};
+use eyre::Result;
 use tokio_stream::{Stream, StreamExt};
 
 use crate::{
